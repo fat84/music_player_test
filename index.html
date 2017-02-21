@@ -1,0 +1,43 @@
+<html>
+    <head>
+        <link rel='stylesheet' href='css/test.css'/>
+        
+        <script src='js/test.js'></script>
+    </head>
+
+    <body>        
+        <br>
+        <!-- Header buttons -->
+        <label for='add_button' id='add_label' class='header_button'>Add file</label>
+        <input type='file' id='add_button'/>
+        
+        <label id='replay_button'     class='header_button'>Replay</label>
+        <label id='replay_all_button' class='header_button'>Replay all</label>
+        
+        
+        <br><br><br>
+        <!-- Audio player -->
+        <audio controls><source src=''/></audio>
+        
+        
+        <br><br><br>
+        <!-- Track table -->
+        <table id='track_table' cellspacing='0'>
+            <tr>
+                <th>Title</th>
+                <th>Number</th>
+                <th>Album</th>
+                <th>Genre</th>
+                
+                <!--
+                <th>Played</th>
+                <th>Duration</th>
+                <th>Year</th>
+                <th>Bitrate</th>
+                <th>Size</th>
+                <th>Path</th>
+                -->
+            </tr>
+        </table>
+    </body>
+</html>

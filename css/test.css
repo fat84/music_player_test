@@ -1,0 +1,50 @@
+#track_table {
+    border-bottom: 1px solid black;
+
+    -webkit-user-select: none;
+}
+#track_table th {
+    border: 1px solid black;
+    border-right: 0px;
+
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 80px;
+    padding-right: 80px;
+}
+#track_table td {
+    border-left: 1px solid black;
+
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+
+    min-height: 40px;
+
+    text-align: center;
+}
+#track_table :last-child {
+    border-right: 1px solid black;
+}
+#track_table tr:nth-child(even) {
+    background-color: #eeeeee;
+}
+#add_button {
+    display: none;
+}
+.header_button {
+    padding: 10px;
+
+    border: 1px solid black;
+}
+.header_button:hover {
+    background-color: #dddddd;
+    //-webkit-user-select: none;
+}
+.table_entry:active {
+    background-color: blue;
+}
+audio {
+    width: 50%;
+}

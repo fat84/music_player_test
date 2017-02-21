@@ -1,0 +1,5 @@
+{
+    "name"   : "music player test",
+    "version": "0.1",
+    "main"   : "main.js"
+}

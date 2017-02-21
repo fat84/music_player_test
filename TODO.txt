@@ -1,0 +1,38 @@
+PARTS TO IMPLEMENT
+
+Priority 1
+-----------
+- Header
+- Left list
+X Track table
+X Table: Double click
+X Save track list and add again on execution
+X Replay button
+X Mute button (already integrated)
+- Basic context menu for entries
+    - Add entry remove option
+- Check for file location at start and alert the user if they don't exist
+- Add folder button
+- Add configuration button
+X Go to next track on end
+X Add playlist replay, not track replay
+- Show information of track playing now
+- Light entry playing right now
+
+
+Priority 2
+-----------
+- Player redesign
+- Table: Order by header alphabetically
+- Table: Manual cell resizing
+- Table: Tag edit on double click ?
+- Table: Change color or add dotted border on entry double click
+- Table: Allow to remove files with del
+
+
+Priority 3
+-----------
+- Wikipedia search
+- Lyrics search
+- Tag search
+- Table: shuffle
