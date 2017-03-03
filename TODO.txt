@@ -2,15 +2,15 @@ PARTS TO IMPLEMENT
 
 Priority 1
 -----------
-- Header
-- Left list
+X Header
+X Left list
 X Track table
 X Table: Double click
 X Save track list and add again on execution
 X Replay button
 X Mute button (already integrated)
-- Basic context menu for entries
-    - Add entry remove option
+X Basic context menu for entries
+    X Add entry remove option
 - Check for file location at start and alert the user if they don't exist
 - Add folder button
 - Add configuration button
@@ -18,6 +18,12 @@ X Go to next track on end
 X Add playlist replay, not track replay
 - Show information of track playing now
 - Light entry playing right now
+/ Add previous track button
+/ Add next track button
+/ Strip audio player of controls and set them as individual buttons ?
+- Remove volume gauge and put it into a button ?
+- Add covers
+- Refresh title with entry
 
 
 Priority 2
@@ -28,11 +34,19 @@ Priority 2
 - Table: Tag edit on double click ?
 - Table: Change color or add dotted border on entry double click
 - Table: Allow to remove files with del
+- Table: Drag entries
+- Support utf8
+- Remove trailing 0s from n column
 
 
 Priority 3
 -----------
+- Add equalizer
 - Wikipedia search
 - Lyrics search
 - Tag search
 - Table: shuffle
+- Add radio
+- Add playlist options ?
+- Add free music sources
+- Search for covers

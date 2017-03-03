@@ -1,43 +1,83 @@
 <html>
     <head>
-        <link rel='stylesheet' href='css/test.css'/>
+        <title>music player test</title>
         
+        <link rel='stylesheet' href='css/test.css'/>
         <script src='js/test.js'></script>
     </head>
 
-    <body>        
-        <br>
+    <body>
         <!-- Header buttons -->
-        <label for='add_button' id='add_label' class='header_button'>Add file</label>
-        <input type='file' id='add_button'/>
+        <div id='header'>
+            <!--
+            <label for='add_button' id='add_label' class='header_button'>
+                <img src='icons/folder-3x.png'/>
+            </label>
+            <input type='file' id='add_button'/>
+            -->
+            
+            <label id='back_button' class='header_button'>
+                <img src='icons/media-step-backward-3x.png'></img>
+            </label>
+            
+            <label id='play_button' class='header_button'>
+                <img src='icons/media-play-3x.png'></img>
+            </label>
+            
+            <label id='next_button' class='header_button'>
+                <img src='icons/media-step-forward-3x.png'></img>
+            </label>
+            
+            <label id='replay_button' class='header_button'>
+                <img src='icons/loop-circular-3x.png'></img>
+            </label>
+            
+            <label id='replay_all_button' class='header_button'>
+                <img src='icons/loop-square-3x.png'></img>
+            </label>
+            
+            <!-- Audio player -->
+            <div id='playing_div'>
+                <div id='player_div'>
+                    <audio><source src=''/></audio>
+                    <div id='progress_bar'>
+                    </div>
+                </div>
+            </div>
+        </div>
         
-        <label id='replay_button'     class='header_button'>Replay</label>
-        <label id='replay_all_button' class='header_button'>Replay all</label>
+        <!-- Left div -->
+        <div id='left_td' class='div_td'>
+            <table id='left_table'>
+                <tr><th>Menu</th></tr>
+                <tr><td>Local</td></tr>
+            </table>
+            
+            <div id='cover_div'>
+                <img src='' id='cover' width="200" height="200"></img>
+            </div>
+        </div>
         
-        
-        <br><br><br>
-        <!-- Audio player -->
-        <audio controls><source src=''/></audio>
-        
-        
-        <br><br><br>
-        <!-- Track table -->
-        <table id='track_table' cellspacing='0'>
-            <tr>
-                <th>Title</th>
-                <th>Number</th>
-                <th>Album</th>
-                <th>Genre</th>
+        <div id='track_table_td' class='div_td'>
+            <!-- Track table -->
+            <table id='track_table' cellspacing='0'>
+                <tr>
+                    <th class="track_table_n_col">n</th>
+                    <th class='track_table_title_col'>Title</th>
+                    <th class='track_table_artist_col'>Artist</th>
+                    <th class='track_table_album_col'>Album</th>
+                    <th class='track_table_genre_col'>Genre</th>
                 
-                <!--
-                <th>Played</th>
-                <th>Duration</th>
-                <th>Year</th>
-                <th>Bitrate</th>
-                <th>Size</th>
-                <th>Path</th>
-                -->
-            </tr>
-        </table>
+                    <!--
+                    <th>Played</th>
+                    <th>Duration</th>
+                    <th>Year</th>
+                    <th>Bitrate</th>
+                    <th>Size</th>
+                    <th>Path</th>
+                    -->
+                </tr>
+            </table>
+        </div>
     </body>
 </html>
