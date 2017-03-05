@@ -36,21 +36,32 @@
                 <img src='icons/loop-square-3x.png'></img>
             </label>
             
+            <label id='shuffle_button' class='header_button'>
+                <img src='icons/random-3x.png'></img>
+            </label>
+            
+            <label id='config_button' class='header_button'>
+                <img src='icons/cog-3x.png'></img>
+            </label>
+            
             <!-- Audio player -->
             <div id='playing_div'>
                 <div id='player_div'>
                     <audio><source src=''/></audio>
-                    <div id='progress_bar'>
-                    </div>
+                    <label for='progress_slider' id='progress_label'>1</label>
+                    <input type='range' id='progress_slider'/>
+                    <!-- TODO: Volume button -->
                 </div>
             </div>
         </div>
         
         <!-- Left div -->
-        <div id='left_td' class='div_td'>
+        <div id='left_td'>
             <table id='left_table'>
                 <tr><th>Menu</th></tr>
-                <tr><td>Local</td></tr>
+                <tr><td id="local_button">Local</td></tr>
+                <tr><td id="playlist_button">Playlists</td></tr>
+                <tr><td id="wiki_button">Wikipedia</td></tr>
             </table>
             
             <div id='cover_div'>
@@ -58,15 +69,15 @@
             </div>
         </div>
         
-        <div id='track_table_td' class='div_td'>
+        <div id='right_td'>
             <!-- Track table -->
             <table id='track_table' cellspacing='0'>
                 <tr>
-                    <th class="track_table_n_col">n</th>
-                    <th class='track_table_title_col'>Title</th>
-                    <th class='track_table_artist_col'>Artist</th>
-                    <th class='track_table_album_col'>Album</th>
-                    <th class='track_table_genre_col'>Genre</th>
+                    <th id="n_header" class="track_table_n_col">n</th>
+                    <th id="title_header" class='track_table_title_col'>Title</th>
+                    <th id="artist_header" class='track_table_artist_col'>Artist</th>
+                    <th id="album_header" class='track_table_album_col'>Album</th>
+                    <th id="genre_header" class='track_table_genre_col'>Genre</th>
                 
                     <!--
                     <th>Played</th>
@@ -78,6 +89,7 @@
                     -->
                 </tr>
             </table>
+            <iframe src='' id='wiki_iframe'></iframe>
         </div>
     </body>
 </html>

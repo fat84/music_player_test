@@ -10,14 +10,21 @@
 /*******************
 * Tags
 *******************/
+
+/******************************************
+* Override default input range appearance
+******************************************/
+input[type='range'] {
+    -webkit-appearance: none;
+}
+input[type='range']::-webkit-slider-thumb {
+    -webkit-appearance: none;
+}
+
 body {
     margin: 0px;
     overflow: hidden;
 }
-audio {
-    //width: 50%;
-}
-
 
 /******************
 * Classes
@@ -53,7 +60,6 @@ audio {
 #header {
     background-color: white;
 
-    display: table;
     overflow: hidden;
     
     border-top: 1px solid black;
@@ -65,30 +71,55 @@ audio {
 #add_button {
     display: none;
 }
+#playing_div {
+    position: relative;
+    
+    top: -28px;
+    left: 479px;
+
+    height: var(--header_height);
+}
 #player_div {
     position: relative;
     
-    top: 0px;
-    left: 600px;
+    top: 20px;
+    left: 50px;
 }
-#progress_bar {
-    width: 300px;
-    height: 10px;
-    
+#progress_slider {
+    position: relative;
+
     border: 1px solid black;
-    //background-color: blue;
+    top: 0px;
+
+    height: 10px;
+    width: 300px;
+}
+#progress_slider::-webkit-slider-thumb {
+    background: black;
+    
+    //border: 1px solid black;
+    
+    height: 20px;
+    width: 10px;
+}
+#progress_label {
+    position: relative;
+
+    padding-right: 10px;
+    
+    top: 0px;
 }
 
 /*******
 * Left
 *******/
 #left_td {
-    margin: 0px;
+    //margin: 0px;
     position: absolute;
-    overflow: hidden;
+    overflow: hidden; /* Probably not neccesary */
 
     background-color: white;
-    /border-right: 1px solid black;
+    border-right: 1px solid black;
 
     height: Calc(100% - 60px);
     width: var(--left_menu_width);
@@ -116,15 +147,15 @@ audio {
 }
 
 /********
-* Table
+* Right
 ********/
-#track_table_td {
-    position: absolute;
+#right_td {
+    position: relative;
     overflow: scroll;
     
     left: var(--left_menu_width);
 
-    width: Calc(100% - --left_menu_width);
+    width: Calc(100% - var(--left_menu_width));
     height: 100%;
 }
 #track_table {
@@ -154,6 +185,12 @@ audio {
     padding-right: 20px;
 
     text-align: left;
+}
+#wiki_iframe {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: none;
 }
 #track_table :first-child {
     text-align: center;

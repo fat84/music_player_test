@@ -1,5 +1,25 @@
 {
-    "name"   : "music player test",
-    "version": "0.1",
-    "main"   : "main.js"
+    "name": "music_player_test",
+    "description": "music player test",
+    "version": "0.0.1",
+    "author": "Alvaro Fernandez",
+    "main": "main.js",
+    
+    "dependencies": {
+        "electron": ">=0.1",
+        "path": ">=0.1",
+        "url": ">=0.1",
+        "fs": ">=0.1",
+        "json": ">=0.1",
+        "id3js": ">=0.1",
+        "jsonfile": ">=0.1",
+        "request": ">=0.1"
+    },
+    "devDependencies": {
+        "electron": "1.4.15"
+    },
+    
+     "scripts": {
+        "package-win": "electron-packager . --arch=x64 --platform=win32 --electron-version=1.4.15"
+    }
 }

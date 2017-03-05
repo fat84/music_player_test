@@ -1,52 +1,82 @@
-PARTS TO IMPLEMENT
+TODO
+
+
+v0.0.1
+------
+
 
 Priority 1
 -----------
-X Header
-X Left list
-X Track table
-X Table: Double click
-X Save track list and add again on execution
-X Replay button
-X Mute button (already integrated)
-X Basic context menu for entries
-    X Add entry remove option
-- Check for file location at start and alert the user if they don't exist
-- Add folder button
-- Add configuration button
-X Go to next track on end
-X Add playlist replay, not track replay
-- Show information of track playing now
-- Light entry playing right now
-/ Add previous track button
-/ Add next track button
-/ Strip audio player of controls and set them as individual buttons ?
-- Remove volume gauge and put it into a button ?
-- Add covers
-- Refresh title with entry
+DONE Header
+DONE Left list
+DONE Track table
+DONE Table: Double click
+DONE Save track list and add again on execution
+DONE Replay button
+DONE Mute button (already integrated)
+DONE Basic context menu for entries
+  DONE Add entry remove option
+DONE Catch invalid file errors
+???? Add folder context menu entry
+PART Add configuration button
+DONE Go to next track on end
+DONE Add playlist replay
+---- Show information of track playing now
+---- Light entry playing right now
+DONE Add previous track button
+DONE Add next track button
+---- Strip audio player of controls and set them as individual buttons
+---- Remove volume gauge and put it into a button
+DONE Add covers
+DONE Refresh title with entry
+---- Save to library on blur and to file on context menu
+---- Fix cover position on full screen
+---- Fix nan duration on last track finished
+---- Save table after sorting
+---- Scroll bar passes the bottom limit
+---- Change drop zone from right_td to track_table
+
 
 
 Priority 2
 -----------
-- Player redesign
-- Table: Order by header alphabetically
-- Table: Manual cell resizing
-- Table: Tag edit on double click ?
-- Table: Change color or add dotted border on entry double click
-- Table: Allow to remove files with del
-- Table: Drag entries
-- Support utf8
-- Remove trailing 0s from n column
+
+---- Player redesign
+---- Table: Order by header alphabetically
+---- Table: Manual cell resizing
+???? Table: Tag edit on double click
+---- Table: Change color or add dotted border on entry double click
+---- Table: Allow to remove files with del
+---- Table: Drag entries
+---- Support utf8
+---- Remove trailing 0s from n column
+---- Choose columns to be displayed
+---- Probably there is no need for a MenuItem constant
+---- Remove square around player when focused
+---- Add "Add file" context menu option
+
+---- Can't find (maybe a parsing error):
+    goreshit - toromi love #36021.mp3
+	Kemibu Dance!
+	Wolverine Aint...
+	ultraBeast
+	Where lolis...
+
 
 
 Priority 3
 -----------
-- Add equalizer
-- Wikipedia search
-- Lyrics search
-- Tag search
-- Table: shuffle
-- Add radio
-- Add playlist options ?
-- Add free music sources
-- Search for covers
+
+---- Add equalizer
+DONE Wikipedia search
+---- Lyrics search
+---- Tag search
+DONE Table: shuffle
+---- Add m3u streams
+---- Add Icecast stream directory
+---- Add playlists
+---- Add free music sources
+---- Search for covers
+---- Scroll position on wiki_iframe is a bit wider than the one in track_table
+---- Add album view
+???? Add default album image
