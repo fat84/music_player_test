@@ -1,59 +1,54 @@
+BUGS
+-----
+
+DONE - Cover don't have a fixed position
+---- - NaN duration on last track finished
+---- - When its on the last track and shuffle is on it doesn't go to the next
+---- - Scroll position on wiki_frame is a bit wider than in track_table
+---- - Some tags have leading spaces which make sort not to work well (remove trim() from sort)
+
+
+
 TODO
-
-
-v0.0.1
-------
-
+-----
 
 Priority 1
 -----------
-DONE Header
-DONE Left list
-DONE Track table
-DONE Table: Double click
-DONE Save track list and add again on execution
-DONE Replay button
-DONE Mute button (already integrated)
-DONE Basic context menu for entries
-  DONE Add entry remove option
-DONE Catch invalid file errors
-???? Add folder context menu entry
-PART Add configuration button
-DONE Go to next track on end
-DONE Add playlist replay
----- Show information of track playing now
----- Light entry playing right now
-DONE Add previous track button
-DONE Add next track button
----- Strip audio player of controls and set them as individual buttons
----- Remove volume gauge and put it into a button
-DONE Add covers
-DONE Refresh title with entry
----- Save to library on blur and to file on context menu
----- Fix cover position on full screen
----- Fix nan duration on last track finished
----- Save table after sorting
----- Scroll bar passes the bottom limit
----- Change drop zone from right_td to track_table
 
+PART Add configuration button
+???? Add folder context menu entry
+???? Show information of track playing now
+---- Light entry playing right now
+PART Strip audio player of controls and set them as individual buttons
+  ---- Remove volume gauge and put it into a button
+---- Save to library on blur and to file on context menu click
+???? Save table after sorting
+DONE Scroll bar passes the bottom limit
+---- Change drop zone from right_td to track_table
+PART Better table sort
+---- Dont save metadata in the library, read directly the id3 metadata every time (keep in mind sort efficiency)
 
 
 Priority 2
 -----------
 
 ---- Player redesign
----- Table: Order by header alphabetically
+DONE Table: Order by header alphabetically
 ---- Table: Manual cell resizing
 ???? Table: Tag edit on double click
 ---- Table: Change color or add dotted border on entry double click
 ---- Table: Allow to remove files with del
 ---- Table: Drag entries
----- Support utf8
+---- Support utf8 id3 reading
 ---- Remove trailing 0s from n column
----- Choose columns to be displayed
+---- Allow to choose columns to be displayed
 ---- Probably there is no need for a MenuItem constant
 ---- Remove square around player when focused
 ---- Add "Add file" context menu option
+---- Change time while moving progress handler
+---- Change alignment handling from #track_table:first-child to track_table_n_col
+---- Change track_table.hide() etc for one global class
+---- Icecast tab header sort
 
 ---- Can't find (maybe a parsing error):
     goreshit - toromi love #36021.mp3
@@ -63,20 +58,17 @@ Priority 2
 	Where lolis...
 
 
-
 Priority 3
 -----------
 
 ---- Add equalizer
-DONE Wikipedia search
 ---- Lyrics search
 ---- Tag search
-DONE Table: shuffle
 ---- Add m3u streams
----- Add Icecast stream directory
+DONE Add Icecast stream directory
 ---- Add playlists
 ---- Add free music sources
----- Search for covers
----- Scroll position on wiki_iframe is a bit wider than the one in track_table
+DONE Search for covers
 ---- Add album view
 ???? Add default album image
+???? Add a glass icon and a css animation to search input

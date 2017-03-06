@@ -4,6 +4,7 @@
         
         <link rel='stylesheet' href='css/test.css'/>
         <script src='js/test.js'></script>
+        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     </head>
 
     <body>
@@ -48,6 +49,7 @@
             <div id='playing_div'>
                 <div id='player_div'>
                     <audio><source src=''/></audio>
+                    
                     <label for='progress_slider' id='progress_label'>1</label>
                     <input type='range' id='progress_slider'/>
                     <!-- TODO: Volume button -->
@@ -62,16 +64,19 @@
                 <tr><td id="local_button">Local</td></tr>
                 <tr><td id="playlist_button">Playlists</td></tr>
                 <tr><td id="wiki_button">Wikipedia</td></tr>
+                <tr><td id="icecast_button">Icecast Directory</td></tr>
             </table>
             
+            <input type='text' id='search_input' placeholder=' Search'></input>
+            
             <div id='cover_div'>
-                <img src='' id='cover' width="200" height="200"></img>
+                <img src='' id='cover'></img>
             </div>
         </div>
         
         <div id='right_td'>
             <!-- Track table -->
-            <table id='track_table' cellspacing='0'>
+            <table id='track_table' class="table" cellspacing='0'>
                 <tr>
                     <th id="n_header" class="track_table_n_col">n</th>
                     <th id="title_header" class='track_table_title_col'>Title</th>
@@ -90,6 +95,15 @@
                 </tr>
             </table>
             <iframe src='' id='wiki_iframe'></iframe>
+            <table id='icecast_table' class='table' cellspacing='0'>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Listening</th>
+                    <th>Playing</th>
+                    <th>Url</th>
+                </tr>
+            </table>
         </div>
     </body>
 </html>

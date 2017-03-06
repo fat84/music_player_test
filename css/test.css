@@ -30,12 +30,13 @@ body {
 * Classes
 ******************/
 .header_button {
+    position: relative;
+    
     padding-left: 20px;
     padding-right: 20px;
     padding-top: 27px;
-    padding-bottom: 20px;
+    padding-bottom: 16px;
 
-    position: relative;
     top: 17px;
 
     border-right: 1px solid black;
@@ -58,9 +59,8 @@ body {
 * Header
 *********/
 #header {
-    background-color: white;
-
     overflow: hidden;
+    position: absolute;
     
     border-top: 1px solid black;
     border-bottom: 1px solid black;
@@ -89,15 +89,12 @@ body {
     position: relative;
 
     border: 1px solid black;
-    top: 0px;
 
     height: 10px;
     width: 300px;
 }
 #progress_slider::-webkit-slider-thumb {
     background: black;
-    
-    //border: 1px solid black;
     
     height: 20px;
     width: 10px;
@@ -106,27 +103,21 @@ body {
     position: relative;
 
     padding-right: 10px;
-    
-    top: 0px;
 }
 
 /*******
 * Left
 *******/
 #left_td {
-    //margin: 0px;
     position: absolute;
     overflow: hidden; /* Probably not neccesary */
 
-    background-color: white;
-    border-right: 1px solid black;
+    top: Calc( var(--header_height) + 2px );
 
     height: Calc(100% - 60px);
     width: var(--left_menu_width);
 }
 #left_table {
-    margin: 0px;
-
     width: 100%;
 }
 #left_table th {
@@ -143,38 +134,54 @@ body {
     position: absolute;
     border-top: 1px solid black;
 
-    top: 307px;
+    top: calc( 100% - var(--left_menu_width) - 3px );
+}
+
+#cover {
+    width:  var(--left_menu_width);
+    height: var(--left_menu_width);
+}
+
+#search_input {
+    position: absolute;
+
+    top: calc( 100% - var(--left_menu_width) - 34px );
+    
+    width: 0%;
+    height: 30px;
 }
 
 /********
 * Right
 ********/
 #right_td {
-    position: relative;
+    position: absolute;
     overflow: scroll;
+
+    border-left: 1px solid black;
     
+    top: calc( var(--header_height) + 2px );
     left: var(--left_menu_width);
 
-    width: Calc(100% - var(--left_menu_width));
-    height: 100%;
+    width: calc ( 100% - var(--left_menu_width) );
+    height: calc( 100% - var(--header_height)   );
 }
-#track_table {
-    border-bottom: 1px solid black;
+.table {
+    ////border-bottom: 1px solid black;
 
     -webkit-user-select: none;
 }
-#track_table th {
-    border: 1px solid black;
-    border-right: none;
-    border-top: none;
+.table th {
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
 
     height: 40px;
     width: 150px;
 }
-#track_table td {
-    border-left: 1px solid black;
+.table td {
+    border-right: 1px solid black;
 
-    overflow: hidden;
+    overflow: hidden; /* For long text trimming */
     white-space: nowrap;
     max-width: 200px;
     text-overflow: ellipsis;
@@ -188,16 +195,18 @@ body {
 }
 #wiki_iframe {
     position: relative;
+    
     height: 100%;
     width: 100%;
+    
     display: none;
 }
-#track_table :first-child {
+#icecast_table {
+    display: none;
+}
+.table :first-child {
     text-align: center;
 }
-#track_table :last-child {
-    border-right: 1px solid black;
-}
-#track_table tr:nth-child(even) {
+.table tr:nth-child(even) {
     background-color: #eeeeee;
 }
