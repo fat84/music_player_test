@@ -316,7 +316,7 @@ function remove_entry(entry)
         /**************************************************
         * Remove entries index from library and save json
         **************************************************/
-        var n = get_index(entry.path);
+        var n = get_index(library, entry.path);
         
         library.splice(n, 1);
         $('#track_table tr')[n+1].remove(); // 0 index is header
@@ -367,14 +367,13 @@ function play(entry)
         /********************
         * Get library index
         ********************/
-        entry_playing = get_index(entry.path);
-        
-        audio.pause();
+        entry_playing = get_index(library, entry.path);
         
         
         /*****************************
         * Set new path and play file
         *****************************/
+        audio.pause();
         audio.src = entry.path;
         
         set_window_title(entry.artist + ' - ' + entry.title);
@@ -407,17 +406,18 @@ function play(entry)
 ***********************************/
 function play_next_entry()
     {
+        var index;
+        
         /**********************************************************************************
         * If it's the last track check for REPLAY_ALL and go to the first one, else go on
         **********************************************************************************/
-        entry_playing =
-            SHUFFLE    ? parseInt( Math.random()*library.length ) :
-            REPLAY_ALL ? entry_playing + 1 % library.length       :
-                         entry_playing + 1;
+        index = SHUFFLE    ? parseInt( Math.random()*library.length ) :
+                REPLAY_ALL ? (entry_playing + 1) % library.length     :
+                             (entry_playing + 1);
         
-        if(entry_playing >= 0 && entry_playing < library.length)
+        if(index >= 0 && index < library.length)
             {
-                play( library[entry_playing] );
+                play( library[index] );
             }
     }
 
