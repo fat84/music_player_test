@@ -1,7 +1,7 @@
 # music_player_test
 Music player test made with JS and CSS
 
-<br><br>
+<br>
 <h2>Download</h2>
 
 Windows 64 bit: http://tinyurl.com/music-player-test-v0-0-1
