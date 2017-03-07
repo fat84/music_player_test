@@ -959,13 +959,11 @@ window.onload = function()
         
         audio.onplay  = function(e)
             {
-                play_button.children()[0].src =
-                    'file:///C:/users/alvaro/documents/javascript/music_player/icons/media-pause-3x.png';
+                play_button.children()[0].src = 'icons/media-pause-3x.png';
             };
         audio.onpause = function(e)
             {
-                play_button.children()[0].src =
-                    'file:///C:/users/alvaro/documents/javascript/music_player/icons/media-play-3x.png';
+                play_button.children()[0].src = 'icons/media-play-3x.png';
             };
         
         audio.ontimeupdate = update_progress;
