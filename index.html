@@ -3,8 +3,12 @@
         <title>music player test</title>
         
         <link rel='stylesheet' href='css/test.css'/>
+        <link rel='stylesheet' href='css/header.css'/>
+        <link rel='stylesheet' href='css/left.css'/>
+        <link rel='stylesheet' href='css/right.css'/>
+        
+        
         <script src='js/test.js'></script>
-        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     </head>
 
     <body>
@@ -67,7 +71,7 @@
                 <tr><td id="icecast_button">Icecast Directory</td></tr>
             </table>
             
-            <input type='text' id='search_input' placeholder=' Search'></input>
+            <input type='text' id='search_input' placeholder='Search'></input>
             
             <div id='cover_div'>
                 <img src='' id='cover'></img>
@@ -76,7 +80,7 @@
         
         <div id='right_td'>
             <!-- Track table -->
-            <table id='track_table' class="table" cellspacing='0'>
+            <table id='track_table' class="table right_el" cellspacing='0'>
                 <tr>
                     <th id="n_header" class="track_table_n_col">n</th>
                     <th id="title_header" class='track_table_title_col'>Title</th>
@@ -94,8 +98,8 @@
                     -->
                 </tr>
             </table>
-            <iframe src='' id='wiki_iframe'></iframe>
-            <table id='icecast_table' class='table' cellspacing='0'>
+            <iframe src='' id='wiki_iframe' class='right_el'></iframe>
+            <table id='icecast_table' class='table right_el' cellspacing='0'>
                 <tr>
                     <th>Name</th>
                     <th>Description</th>

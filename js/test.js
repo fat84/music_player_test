@@ -1,25 +1,18 @@
 //test.js
-const {remote}         = require('electron');
-const {Menu, MenuItem} = remote;
 
-const fs               = require('fs');
-const $                = require('jquery');
-const id3              = require('id3js');
-const jsonfile         = require('jsonfile');
+const {remote} = require('electron');
+const {Menu}   = remote;
 
-const request          = require('request');
+const fs       = require('fs');
+const $        = require('jquery');
+const id3      = require('id3js');
+const jsonfile = require('jsonfile');
 
-const sort             = require('./js/sort.js');
-const move             = require('./js/move.js');
+const request  = require('request');
 
-/************************************************************************
-* Notes and TODO
-*
-*   - It only read id3v2 tags, not id3v1 tags, add id3v1 tags as backup
-*   - It might be neccesary a e.preventDefault() on context menu
-*   - Save to library on blur and to library on context menu
-*
-************************************************************************/
+const sort     = require('./js/sort.js');
+const move     = require('./js/move.js');
+const icecast  = require('./js/icecast.js');
 
 
 /**********************************************************
@@ -61,6 +54,9 @@ var progress_slider;
 var progress_label;
 
 var add_button;
+var back_button;
+var play_button;
+var next_button;
 var replay_button;
 var replay_all_button;
 var shuffle_button;
@@ -68,6 +64,11 @@ var shuffle_button;
 var local_button;
 var wiki_button;
 var icecast_button;
+
+var search_input;
+
+var right_el;
+var right_td;
 
 var track_table;
 var wiki_iframe;
@@ -100,11 +101,23 @@ var SEARCH_COVER        = true;
 /**********************************************************
 * Functions
 **********************************************************/
-function get_index(path)
+
+/**************************************************************
+* Name        : get_index
+* Description : Get library index from path
+*
+* Takes       : lib  (hash)   - Library to search into
+*               path (string) - Path to get the index from
+*
+* Returns     : Nothing
+* Notes       : Raises an error if it doesn't find the index
+* TODO        : Nothing
+**************************************************************/
+function get_index(lib, path)
     {
-        for(var n = 0, len = library.length; n < len; n++)
+        for(var n = 0, len = lib.length; n < len; n++)
             {
-                if(path == library[n].path)
+                if(path == lib[n].path)
                     {
                         return n;
                     }
@@ -113,6 +126,14 @@ function get_index(path)
         throw 'Error: entry index doesnt exist.';
     }
 
+/***************************************************
+* Name        : format_time
+* Description : Convert seconds to an mm/ss format
+* Takes       : time (float/int) - Time in seconds
+* Returns     : (string) - Time in mm/ss format
+* Notes       : Nothing
+* TODO        : Nothing
+***************************************************/
 function format_time(time)
     {
         var time_str = '';
@@ -126,19 +147,28 @@ function format_time(time)
         return m + ':' + s;
     }
 
-function parse_data(data, callback)
-    {
-        //var parser = new DOMParser();
-        //var el     = parser.parseFromString(data, 'text/html');
-        
-        //console.log( $('<html>').html(data).contents());
-    }
-
+/*****************************************************
+* Name        : set_window_title
+* Description : Shorthand for setting window's title
+* Takes       : title (string) - Title to be set
+* Returns     : Nothing
+* Notes       : Nothing
+* TODO        : Nothing
+*****************************************************/
 function set_window_title(title)
     {
         window.document.title = title;
     }
 
+
+/*********************************************************************
+* Name        : toggle_editable
+* Description : Toggles the contenteditable attribute of track_table
+* Takes       : Nothing
+* Returns     : Nothing
+* Notes       : Nothing
+* TODO        : Nothing
+*********************************************************************/
 function toggle_editable()
     {
         IS_CONTENT_EDITABLE = !IS_CONTENT_EDITABLE;
@@ -155,6 +185,15 @@ function toggle_editable()
             }
     }
 
+
+/********************************************
+* Name        : edit_tag
+* Description : Handler on tag editting end
+* Takes       : e (obj) - Event
+* Returns     : Nothing
+* Notes       : Nothing
+* TODO        : Nothing
+********************************************/
 function edit_tag(e)
     {
         if(e.key == 'Enter')
@@ -164,11 +203,32 @@ function edit_tag(e)
             }
     }
 
+
+/*********************************************
+* Name        : edit_blur
+* Description : Handler on tag edditing blur
+* Takes       : e (obj) - Event
+* Returns     : Nothing
+* Notes       : Nothing
+* TODO        : Everything
+*********************************************/
 function edit_blur(e)
     {
         
     }
 
+
+/***************************************************************************
+* Name        : add_file
+*
+* Description : Read files from add_button, read the id3 tags and add them
+*               to the table and library
+*
+* Takes       : e (obj) - Event
+* Returns     : Nothing
+* Notes       : Nothing
+* TODO        : Nothing
+***************************************************************************/
 function add_file(e)
     {
         var path = add_button.files[0].path;
@@ -176,6 +236,15 @@ function add_file(e)
         read_tags(path);
     }
 
+
+/*************************************
+* Name        : drop_file
+* Description : Handler on file drop
+* Takes       : e (obj) - Event
+* Returns     : Nothing
+* Notes       : Nothing
+* TODO        : Nothing
+*************************************/
 function drop_file(e)
     {
         e.preventDefault();
@@ -188,6 +257,15 @@ function drop_file(e)
             }
     }
         
+
+/************************************************************
+* Name        : read_tags
+* Description : Read id3 tags from path and add it to table
+* Takes       : path (str) - Path to the file
+* Returns     : Nothing
+* Notes       : Nothing
+* TODO        : Nothing
+************************************************************/
 function read_tags(path)
     {
         id3
@@ -197,29 +275,42 @@ function read_tags(path)
             )
     }
 
+/************************************************
+* Name        : add_folder
+* Description : TODO
+* Takes       : path (str) - Path to the folder
+* Returns     : TODO
+* Notes       : TODO
+* TODO        : Everything
+************************************************/
 function add_folder(path)
     {
         /** TODO **/
     }
 
+
+/*************************************************
+* Name        : save_library
+* Description : Shorthand for saving the library
+* Takes       : Nothing
+* Returns     : Nothing
+* Notes       : Nothing
+* TODO        : Nothing
+*************************************************/
 function save_library()
     {
         jsonfile.writeFileSync('library.json', library);
     }
 
-function add_headers()
-    {
-        track_table[0].innerHTML =
-            '<table id="track_table" cellspacing="0">'
-            '    <tr>'
-            '        <th class="track_table_n_col">n</th>'
-            '        <th class="track_table_title_col">Title</th>'
-            '        <th class="track_table_artist_col>Artist</th>'
-            '        <th class="track_table_album_col">Album</th>'
-            '        <th class="track_table_genre_col">Genre</th>'
-            '    </tr>';
-    }
 
+/**************************************************************
+* Name        : remove_entry
+* Description : Remove entry from track_table and the library
+* Takes       : entry (hash) - Entry to be removed
+* Returns     : Nothing
+* Notes       : Nothing
+* TODO        : Nothing
+**************************************************************/
 function remove_entry(entry)
     {
         /**************************************************
@@ -233,6 +324,15 @@ function remove_entry(entry)
         save_library();
     }
 
+
+/***********************************
+* Name        :
+* Description :
+* Takes       :
+* Returns     :
+* Notes       :
+* TODO        :
+***********************************/
 function show_entry_context_menu(e, entry)
     {
         var target = e.target;
@@ -253,6 +353,15 @@ function show_entry_context_menu(e, entry)
         menu.popup(remote.getCurrentWindow());
     }
 
+
+/***********************************
+* Name        :
+* Description :
+* Takes       :
+* Returns     :
+* Notes       :
+* TODO        :
+***********************************/
 function play(entry)
     {
         /********************
@@ -287,30 +396,57 @@ function play(entry)
         audio.play();
     }
 
+
+/***********************************
+* Name        :
+* Description :
+* Takes       :
+* Returns     :
+* Notes       :
+* TODO        :
+***********************************/
 function play_next_entry()
     {
         /**********************************************************************************
         * If it's the last track check for REPLAY_ALL and go to the first one, else go on
         **********************************************************************************/
-        if( (entry_playing+1 < library.length) || (REPLAY_ALL == true) )
+        entry_playing =
+            SHUFFLE    ? parseInt( Math.random()*library.length ) :
+            REPLAY_ALL ? entry_playing + 1 % library.length       :
+                         entry_playing + 1;
+        
+        if(entry_playing >= 0 && entry_playing < library.length)
             {
-                entry_playing = SHUFFLE ? parseInt(Math.random()*library.length) : entry_playing+1;
-                if(REPLAY_ALL) { entry_playing %= library.length; }
-                
                 play( library[entry_playing] );
             }
     }
 
+
+/***********************************
+* Name        :
+* Description :
+* Takes       :
+* Returns     :
+* Notes       :
+* TODO        :
+***********************************/
 function play_previous_entry()
     {
         if( entry_playing-1 >= 0 )
             {
-                entry_playing--;
-                
-                play( library[entry_playing] );
+                play( library[entry_playing - 1] );
             }
     }
 
+
+/***********************************
+* Name        :
+* Description :
+* Takes       :
+* Returns     :
+* Notes       :
+* TODO        :
+***********************************/
 function update_progress(e)
     {
         var time     = audio.currentTime;
@@ -321,6 +457,15 @@ function update_progress(e)
         //setTimeout( update_progress, 100 );
     }
 
+
+/***********************************
+* Name        :
+* Description :
+* Takes       :
+* Returns     :
+* Notes       :
+* TODO        :
+***********************************/
 function load_library(lib)
     {
         for(var i = 0, len = lib.length; i < len; i++)
@@ -329,6 +474,15 @@ function load_library(lib)
             }
     }
 
+
+/***********************************
+* Name        :
+* Description :
+* Takes       :
+* Returns     :
+* Notes       :
+* TODO        :
+***********************************/
 function clear_table(table)
     {
         /********************
@@ -346,6 +500,15 @@ function clear_table(table)
             }
     }
 
+
+/***********************************
+* Name        :
+* Description :
+* Takes       :
+* Returns     :
+* Notes       :
+* TODO        :
+***********************************/
 function reload_library(lib, table)
     {
         /*********************
@@ -366,6 +529,15 @@ function reload_library(lib, table)
         entry_playing = -1;
     }
 
+
+/***********************************
+* Name        :
+* Description :
+* Takes       :
+* Returns     :
+* Notes       :
+* TODO        :
+***********************************/
 function add_entry(path, tags)
     {
         /**************************
@@ -400,6 +572,15 @@ function add_entry(path, tags)
         add_entry_to_table(entry);
     }
 
+
+/***********************************
+* Name        :
+* Description :
+* Takes       :
+* Returns     :
+* Notes       :
+* TODO        :
+***********************************/
 function add_entry_to_table(entry)
     {
         /******************
@@ -430,6 +611,15 @@ function add_entry_to_table(entry)
         last_tr.children().on('blur', edit_blur);
     }
 
+
+/***********************************
+* Name        :
+* Description :
+* Takes       :
+* Returns     :
+* Notes       :
+* TODO        :
+***********************************/
 function set_cover(dir)
     {
         var cover = $('#cover')[0];        
@@ -490,6 +680,15 @@ function set_cover(dir)
             }
     }
 
+
+/***********************************
+* Name        :
+* Description :
+* Takes       :
+* Returns     :
+* Notes       :
+* TODO        :
+***********************************/
 function search_cover(data)
     {
         var match = data.match(/{"id".+?}/g);
@@ -550,24 +749,38 @@ function search_cover(data)
         return false;
     }
 
+
+/***********************************
+* Name        :
+* Description :
+* Takes       :
+* Returns     :
+* Notes       :
+* TODO        :
+***********************************/
 function process_search(e)
     {
-        if(e.key == 'Enter')
-            {
-                var text = search_input.val();
-                search_input.val('');
+        var text = search_input.val();
         
-                if(current_tab == 'local')
-                    {
-                        sort.filter(library, text);
-                    }
-                else if(current_tab == 'icecast')
-                    {
-                        get_xiph_dir(text);
-                    }
+        if(current_tab == 'local')
+            {
+                sort.filter(library, text);
+            }
+        else if(current_tab == 'icecast' && e.key == 'Enter')
+            {
+                icecast.search(text);
             }
     }
 
+
+/***********************************
+* Name        :
+* Description :
+* Takes       :
+* Returns     :
+* Notes       :
+* TODO        :
+***********************************/
 function get_wiki_page(artist)
     {
         var action    = 'opensearch';
@@ -600,8 +813,7 @@ function get_wiki_page(artist)
                         
                         wiki_iframe[0].src = url;
                         
-                        track_table.hide();
-                        icecast_table.hide();
+                        right_el.hide();
                         
                         /***************************
                         * Hide right_td scroll bar
@@ -610,77 +822,6 @@ function get_wiki_page(artist)
                         wiki_iframe.show();
                     }
             });
-    }
-
-
-function parse_m3u(data)
-    {
-        console.log(data);
-        
-        audio.pause();
-        audio.src = data;
-        audio.play();
-    }
-
-function add_icecast_table(name, url, listeners, description, playing, m3u)
-    {
-        var tr =
-            '<tr>'
-            + '<td id="icecast_name">'        + name        + '</td>'
-            + '<td id="icecast_description">' + description + '</td>'
-            + '<td id="icecast_listeners">'   + listeners   + '</td>'
-            + '<td id="icecast_playing">'     + playing     + '</td>'
-            + '<td id="icecast_url">'         + url         + '</td>'
-            + '<\tr>';
-
-        icecast_table.append(tr);
-        
-        var last = $('#icecast_table tr').last();
-        
-        last[0].ondblclick = function(e) { $.get(m3u, parse_m3u); };
-    }
-    
-function get_xiph_dir(search)
-    {
-        var url = 'http://dir.xiph.org/search?search='+search;
-        
-        $.get(url, parse_xiph_dir);
-    }
-
-function parse_xiph_dir(data)
-    {
-        data = data.replace(/\n/g, '');
-        
-        var rows = data.match(/<tr class="row\d+?">.+?<\/tr>/g);
-        
-        clear_table(icecast_table);
-        
-        for(var i = 0; i < rows.length; i++)
-            {
-                var xiph = 'http://dir.xiph.org';
-                
-                var url_name = rows[i].match(/<span class="name"><a href="(.+?)" onclick=".+?">(.+?)<\/a>/);
-                var url  = url_name[1];
-                var name = url_name[2];
-                
-                var listeners   = rows[i].match(/<span class="listeners">\[(\d+).+?<\/span>/);
-                var description = rows[i].match(/<p class="stream-description">(.+?)<\/p>/);
-                var playing     = rows[i].match(/<p class="stream-onair"><.+?>.+?<\/.+?>(.+?)<\/p>/);
-                var m3u         = rows[i].match(/.+<a href="(.+?\.m3u)"/);
-                
-                listeners   = listeners   == null ? 'No listeners.'    : listeners[1];
-                description = description == null ? 'No description.'  : description[1];
-                playing     = playing     == null ? 'Playing nothing.' : playing[1];
-                m3u         = m3u         == null ? 'No m3u.'          : xiph + m3u[1];
-                
-                
-                add_icecast_table(name, url, listeners, description, playing, m3u);
-            }
-        
-        //console.log(rows);
-        
-        //console.log(data);
-        //fs.writeFileSync('page.txt', data);
     }
 
 
@@ -712,13 +853,14 @@ window.onload = function()
         search_input      = $('#search_input');
         
         right_td          = $('#right_td');
+        right_el          = $('.right_el');
         
         
-        var n_header      = $('#n_header')[0];
-        var title_header  = $('#title_header')[0];
-        var artist_header = $('#artist_header')[0];
-        var album_header  = $('#album_header')[0];
-        var genre_header  = $('#genre_header')[0];
+        var n_header      = $('#n_header');
+        var title_header  = $('#title_header');
+        var artist_header = $('#artist_header');
+        var album_header  = $('#album_header');
+        var genre_header  = $('#genre_header');
         
         
         library = jsonfile.readFileSync('library.json');
@@ -750,15 +892,21 @@ window.onload = function()
             {
                 audio.loop = !audio.loop;
                 
-                replay_button[0].style.background =
-                    audio.loop == true ? HEADER_BUTTON_PUSHED_COLOR : HEADER_BUTTON_NORMAL_COLOR;
+                replay_button.css
+                    (
+                        'background-color',
+                        audio.loop == true ? HEADER_BUTTON_PUSHED_COLOR : HEADER_BUTTON_NORMAL_COLOR
+                    );
             });
         replay_all_button.on('click', function(e)
             {
                 REPLAY_ALL = !REPLAY_ALL;
                 
-                replay_all_button[0].style.background =
-                    REPLAY_ALL ? HEADER_BUTTON_PUSHED_COLOR : HEADER_BUTTON_NORMAL_COLOR;
+                replay_all_button.css
+                    (
+                        'background-color',
+                        REPLAY_ALL ? HEADER_BUTTON_PUSHED_COLOR : HEADER_BUTTON_NORMAL_COLOR
+                    );
             });
 
 
@@ -769,8 +917,11 @@ window.onload = function()
             {
                 SHUFFLE = !SHUFFLE;
                 
-                shuffle_button[0].style.background =
-                    SHUFFLE ? HEADER_BUTTON_PUSHED_COLOR : HEADER_BUTTON_NORMAL_COLOR;
+                shuffle_button.css
+                    (
+                        'background-color',
+                        SHUFFLE ? HEADER_BUTTON_PUSHED_COLOR : HEADER_BUTTON_NORMAL_COLOR
+                    );
             });
 
         
@@ -786,11 +937,11 @@ window.onload = function()
         /*****************************
         * Sort table on header click
         *****************************/
-        n_header.onclick      = function(){ sort.library(library, 'number'); };
-        title_header.onclick  = function(){ sort.library(library, 'title');  };
-        artist_header.onclick = function(){ sort.library(library, 'artist'); };
-        album_header.onclick  = function(){ sort.library(library, 'album');  };
-        genre_header.onclick  = function(){ sort.library(library, 'genre');  };
+        n_header.on      ( 'click', function(){ sort.library(library, 'number'); } );
+        title_header.on  ( 'click', function(){ sort.library(library, 'title');  } );
+        artist_header.on ( 'click', function(){ sort.library(library, 'artist'); } );
+        album_header.on  ( 'click', function(){ sort.library(library, 'album');  } );
+        genre_header.on  ( 'click', function(){ sort.library(library, 'genre');  } );
         
         
         /************
@@ -851,32 +1002,30 @@ window.onload = function()
         /********************
         * Left menu buttons
         ********************/
-        local_button[0].onclick = function()
+        local_button.on('click', function()
             {
                 current_tab = 'local';
                 
-                wiki_iframe.hide();
-                icecast_table.hide();
+                right_el.hide();
                 
                 right_td.css('overflow', 'scroll');
                 track_table.show();
-            };
-        wiki_button[0].onclick = function()
+            });
+        wiki_button.on('click', function()
             {
                 current_tab = 'wikipedia';
                 
                 get_wiki_page( library[entry_playing].artist );
-            };
-        icecast_button[0].onclick = function()
+            });
+        icecast_button.on('click', function()
             {
                 current_tab = 'icecast';
-                track_table.hide();
-                wiki_iframe.hide();
                 
+                right_el.hide();
                 icecast_table.show();
-            };
+            });
 
-        search_input[0].onkeydown = process_search;
+        search_input.on('keyup', process_search);
 
         
         /**************

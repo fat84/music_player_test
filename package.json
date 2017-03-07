@@ -6,17 +6,14 @@
     "main": "main.js",
     
     "dependencies": {
-        "electron": ">=0.1",
-        "path": ">=0.1",
-        "url": ">=0.1",
-        "fs": ">=0.1",
-        "json": ">=0.1",
-        "id3js": ">=0.1",
-        "jsonfile": ">=0.1",
-        "request": ">=0.1"
+        "url": ">=0.11.0",
+        "jquery": ">=3.1.0",
+        "id3js": ">=1.1.0",
+        "jsonfile": ">=2.3.0",
+        "request": ">=2.50.0"
     },
     "devDependencies": {
-        "electron": "1.4.15"
+        "electron": ">= 1.4.15"
     },
     
      "scripts": {

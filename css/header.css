@@ -1,0 +1,95 @@
+/*************
+* Header CSS
+*************/
+
+/**********************************************************
+* Tag selectors
+**********************************************************/
+
+/******************************************
+* Override default input range appearance
+******************************************/
+input[type='range'],
+input[type='range']::-webkit-slider-thumb {
+    -webkit-appearance: none;
+}
+
+body {
+    overflow: hidden;
+    
+    margin: 0px;
+}
+
+
+/**********************************************************
+* Class selectors
+**********************************************************/
+
+.header_button {
+    position: relative;
+
+    border-right: 1px solid black;
+    
+    padding-left:   20px;
+    padding-right:  20px;
+    padding-top:    27px;
+    padding-bottom: 16px;
+
+    top: 17px;
+
+    background-color: #ffffff;
+}
+.header_button:hover {
+    background-color: #dddddd;
+}
+
+/**********************************************************
+* Id selectors
+**********************************************************/
+
+#header {
+    overflow: hidden;
+    position: absolute;
+    
+    border-top:    1px solid black;
+    border-bottom: 1px solid black;
+    
+    width:  100%;
+    height: var(--header_height);
+}
+
+#add_button { display: none; }
+
+#playing_div {
+    position: relative;
+    
+    top:  -28px;
+    left: 479px;
+
+    height: var(--header_height);
+}
+#player_div {
+    position: relative;
+    
+    top:  20px;
+    left: 50px;
+}
+#progress_slider {
+    position: relative;
+
+    border: 1px solid black;
+
+    height: 10px;
+    width:  300px;
+}
+#progress_slider::-webkit-slider-thumb {
+    background-color: black;
+    
+    height: 20px;
+    width:  10px;
+}
+#progress_label {
+    position: relative;
+
+    padding-right: 10px;
+}

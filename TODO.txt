@@ -3,10 +3,22 @@ BUGS
 
 DONE - Cover don't have a fixed position
 ---- - NaN duration on last track finished
----- - When its on the last track and shuffle is on it doesn't go to the next
+DONE - When its on the last track and shuffle is on it doesn't go to the next
 ---- - Scroll position on wiki_frame is a bit wider than in track_table
 ---- - Some tags have leading spaces which make sort not to work well (remove trim() from sort)
 
+---- Can't find (maybe a parsing error):
+    goreshit - toromi love #36021.mp3
+	Kemibu Dance!
+	Wolverine Aint...
+	ultraBeast
+	Where lolis...
+
+
+NOTES
+------
+
+---- It might be neccesary a e.preventDefault() on context menu
 
 
 TODO
@@ -37,25 +49,21 @@ DONE Table: Order by header alphabetically
 ---- Table: Manual cell resizing
 ???? Table: Tag edit on double click
 ---- Table: Change color or add dotted border on entry double click
+---- Table: Allow entry selection
 ---- Table: Allow to remove files with del
 ---- Table: Drag entries
 ---- Support utf8 id3 reading
 ---- Remove trailing 0s from n column
 ---- Allow to choose columns to be displayed
----- Probably there is no need for a MenuItem constant
+DONE Probably there is no need for a MenuItem constant
 ---- Remove square around player when focused
 ---- Add "Add file" context menu option
 ---- Change time while moving progress handler
 ---- Change alignment handling from #track_table:first-child to track_table_n_col
 ---- Change track_table.hide() etc for one global class
 ---- Icecast tab header sort
-
----- Can't find (maybe a parsing error):
-    goreshit - toromi love #36021.mp3
-	Kemibu Dance!
-	Wolverine Aint...
-	ultraBeast
-	Where lolis...
+---- Set last_tr.onkeydown and last_tr.onblur handlers global
+---- It only read id3v2 tags, not id3v1 tags, add id3v1 tags as backup
 
 
 Priority 3
