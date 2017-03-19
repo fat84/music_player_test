@@ -8,9 +8,10 @@
 
 #left_td {
     position: absolute;
-    overflow: hidden; /* Probably not neccesary */
 
-    top: calc( var(--header_height) + 2px );
+    background-color: var(--left_menu_color);
+
+    top: calc( var(--header_height) + 31px );
 
     height: calc(100% - 60px);
     width:  var(--left_menu_width);
@@ -25,19 +26,21 @@
 #left_table th {
     border-bottom: 1px solid black;
     
+    background-color: var(--left_th_color);
+    
     width:  100%;
-    height: calc( var(--header_height) - 22px );
+    height: calc( var(--header_height) - 20px );
 }
 #left_table td {
-    padding-top:  10px;
-    padding-left: 10px;
+    padding-top:  20px;
+    padding-left: 15px;
 }
 #cover_div {
     position: absolute;
     
     border-top: 1px solid black;
 
-    top: calc( 100% - var(--left_menu_width) - 3px );
+    top: calc( 100% - var(--left_menu_width) - var(--title_height) + 3px );
 }
 #cover {
     width:  var(--left_menu_width);
@@ -48,7 +51,7 @@
 
     padding-left: 4px;
 
-    top: calc( 100% - var(--left_menu_width) - 34px );
+    top: calc( 100% - var(--left_menu_width) - var(--title_height) * 2 + 2px );
     
     width:  100%;
     height: 30px;

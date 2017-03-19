@@ -6,7 +6,10 @@
 * Class selectors
 **********************************************************/
 
-.table { -webkit-user-select: none; }
+.table {
+    -webkit-user-select: none;
+    cursor: default;
+}
 
 .table th {
     /******************************************************
@@ -15,6 +18,8 @@
     ******************************************************/
     border-bottom: 1px solid black;
     border-right:  1px solid black;
+
+    background-color: var(--table_th_color);
 
     height: 40px;
     width:  150px;
@@ -34,9 +39,10 @@
 
     text-align: left;
 }
+.table tr:hover           { background-color: var(--table_tr_hover_color) !important; }
+.table tr:nth-child(even) { background-color: #eeeeee; }
 
 .track_table_n_col        { text-align: center !important; }
-.table tr:nth-child(even) { background-color: #eeeeee; }
 
 /**********************************************************
 * Id selectors
@@ -48,7 +54,7 @@
 
     border-left: 1px solid black;
     
-    top:  calc( var(--header_height) + 2px );
+    top:  calc( var(--header_height) + var(--title_height) + 1px );
     left: var(--left_menu_width);
 
     width:  calc( 100% - var(--left_menu_width) );

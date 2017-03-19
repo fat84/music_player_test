@@ -24,34 +24,65 @@ body {
 /**********************************************************
 * Class selectors
 **********************************************************/
+.title_icon {
+    padding-left:  15px;
+    padding-right: 15px;
+    padding-bottom: 8px;
+    padding-top:    8px;
+
+    float: right;
+}
+.title_icon:hover {
+    background: var(--header_icon_hover_color);
+}
 
 .header_button {
     position: relative;
 
-    border-right: 1px solid black;
+    //border-right: 1px solid black;
     
-    padding-left:   20px;
-    padding-right:  20px;
-    padding-top:    27px;
-    padding-bottom: 16px;
+    padding: 18px;
+    //padding-left:   20px;
+    //padding-right:  20px;
+    //padding-top:    27px;
+    //padding-bottom: 16px;
 
-    top: 17px;
-
-    background-color: #ffffff;
+    background-color: var(--header_icon_normal_color);
 }
 .header_button:hover {
-    background-color: #dddddd;
+    background-color: var(--header_icon_hover_color);
 }
 
 /**********************************************************
 * Id selectors
 **********************************************************/
+#title_bar {
+    height: var(--title_height);
+    
+    background-color: var(--title_color);
+    
+    font-size: 15px;
+
+    /***********************************************************
+    * There is no transparency so the background appears white
+    ***********************************************************/
+    border-radius: 0px 0px 0px 0px;
+}
+#title_text {
+    position: relative;
+
+    padding-left: 20px;
+
+    top: 8px;
+}
 
 #header {
     overflow: hidden;
     position: absolute;
+
+    background-color: var(--header_color);
     
-    border-top:    1px solid black;
+    //border-top:    1px solid black;
     border-bottom: 1px solid black;
     
     width:  100%;
@@ -62,9 +93,10 @@ body {
 
 #playing_div {
     position: relative;
+    background-color: var(--header_color);
     
-    top:  -28px;
-    left: 479px;
+    top:  -64px;
+    left: 472px;
 
     height: var(--header_height);
 }
@@ -92,4 +124,18 @@ body {
     position: relative;
 
     padding-right: 10px;
+}
+#volume_icon {
+    position: relative;
+    
+    border: 1px solid black;
+    border-radius: 2px;
+
+    padding: 10px;
+
+    top: -8px;
+    left: 470px;
+}
+#volume_icon:hover {
+    background-color: #aaaaaa;
 }

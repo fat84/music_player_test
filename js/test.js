@@ -1,5 +1,8 @@
 //test.js
 
+const {app} = require('electron').remote;
+const {BrowserWindow} = require('electron').remote;
+
 const {remote} = require('electron');
 const {Menu}   = remote;
 
@@ -13,6 +16,8 @@ const request  = require('request');
 const sort     = require('./js/sort.js');
 const move     = require('./js/move.js');
 const icecast  = require('./js/icecast.js');
+
+const child_process = require('child_process');
 
 
 /**********************************************************
@@ -43,12 +48,23 @@ function Entry(path, tags)
 * Constants
 **********************************************************/
 const HEADER_BUTTON_PUSHED_COLOR = '#dddddd';
-const HEADER_BUTTON_NORMAL_COLOR = '#ffffff';
+const HEADER_BUTTON_NORMAL_COLOR = 'grey';
+
+const TABLE_TR_COLOR_ODD   = 'white';
+const TABLE_TR_COLOR_EVEN  = '#eeeeee';
+const TABLE_TR_HOVER_COLOR = 'grey';
 
 
 /**********************************************************
 * Global element handlers
 **********************************************************/
+var title_bar;
+var title_text;
+
+var exit_icon;
+var max_icon;
+var min_icon;
+
 var audio;
 var progress_slider;
 var progress_label;
@@ -82,6 +98,7 @@ var template = [];
 var menu     = Menu.buildFromTemplate(template);
 
 var library;
+var playlist;
 var entries = [];
 
 var entry_playing = 0;
@@ -91,11 +108,12 @@ var current_tab   = 'local';
 /*****************
 * Global flags
 *****************/
-var SEARCH_COVER        = true;
+var SEARCH_COVER        = false; ////true;
 var REPLAY_ALL          = false;
 var SHUFFLE             = false;
 var IS_CONTENT_EDITABLE = false;
-var SEARCH_COVER        = true;
+
+var CURRENT_ENTRY_INITIAL_COLOR = 'white';
 
 
 /**********************************************************
@@ -155,11 +173,17 @@ function format_time(time)
 * Notes       : Nothing
 * TODO        : Nothing
 *****************************************************/
-function set_window_title(title)
+function set_window_title(entry)
     {
-        window.document.title = title;
+        title_text.text( entry.artist + ' / ' + entry.album + ' - ' + entry.title );
     }
 
+
+function set_tr_previous_color()
+    {
+        $(track_table.children()[0].children[entry_playing+1])
+            .css('background-color', CURRENT_ENTRY_INITIAL_COLOR);
+    }
 
 /*********************************************************************
 * Name        : toggle_editable
@@ -340,6 +364,22 @@ function show_entry_context_menu(e, entry)
         template =
             [
                 {
+                    label: 'Add folder',
+                    click() { alert('Not implemented yet.'); }
+                },
+                {
+                    label: 'Open file location',
+                    click() { child_process.exec( 'explorer "' + entry.dir + '"' ); }
+                },
+                {
+                    label: 'Reload library',
+                    click() { alert('Not implemented yet.') }
+                },
+                {
+                    label: 'Open wikipedia page',
+                    click() { get_wiki_page(entry.artist) }
+                },
+                {
                     label: 'Remove',
                     click() { remove_entry(entry); }
                 },
@@ -367,7 +407,7 @@ function play(entry)
         /********************
         * Get library index
         ********************/
-        entry_playing = get_index(library, entry.path);
+        entry_playing = get_index(playlist, entry.path);
         
         
         /*****************************
@@ -376,7 +416,19 @@ function play(entry)
         audio.pause();
         audio.src = entry.path;
         
-        set_window_title(entry.artist + ' - ' + entry.title);
+        
+        /****************************
+        * Set color on entry change
+        ****************************/
+        CURRENT_ENTRY_INITIAL_COLOR = entry_playing % 2 == 0
+            ? TABLE_TR_COLOR_EVEN
+            : TABLE_TR_COLOR_ODD;
+
+        $(track_table.children()[0].children[entry_playing+1])
+            .css('background-color', TABLE_TR_HOVER_COLOR);
+        
+        
+        set_window_title(entry);
         
         set_cover(entry.dir);
         
@@ -406,18 +458,20 @@ function play(entry)
 ***********************************/
 function play_next_entry()
     {
+        set_tr_previous_color();
+        
         var index;
         
         /**********************************************************************************
         * If it's the last track check for REPLAY_ALL and go to the first one, else go on
         **********************************************************************************/
-        index = SHUFFLE    ? parseInt( Math.random()*library.length ) :
-                REPLAY_ALL ? (entry_playing + 1) % library.length     :
+        index = SHUFFLE    ? parseInt( Math.random()*playlist.length ) :
+                REPLAY_ALL ? (entry_playing + 1) % playlist.length     :
                              (entry_playing + 1);
         
-        if(index >= 0 && index < library.length)
+        if(index >= 0 && index < playlist.length)
             {
-                play( library[index] );
+                play( playlist[index] );
             }
     }
 
@@ -432,9 +486,11 @@ function play_next_entry()
 ***********************************/
 function play_previous_entry()
     {
+        set_tr_previous_color();
+        
         if( entry_playing-1 >= 0 )
             {
-                play( library[entry_playing - 1] );
+                play( playlist[entry_playing - 1] );
             }
     }
 
@@ -604,8 +660,8 @@ function add_entry_to_table(entry)
         ***********************************************/
         var last_tr = $('#track_table tr').last();
         
-        last_tr[0].ondblclick    = function(e) { play(entry) };
-        last_tr[0].oncontextmenu = function(e) { show_entry_context_menu(e, entry); };
+        last_tr.on('dblclick',    function(e) { set_tr_previous_color(); play(entry); } );
+        last_tr.on('contextmenu', function(e) { show_entry_context_menu(e, entry); } );
         
         last_tr.children().on('keydown', edit_tag);
         last_tr.children().on('blur', edit_blur);
@@ -629,13 +685,20 @@ function set_cover(dir)
         * If there is a file including 'cover', choose it
         **************************************************/
         if(
-            files.includes('cover.jpg')  ||
-            files.includes('cover.jpeg') ||
-            files.includes('cover.gif')  ||
-            files.includes('cover.png')
+               files.includes('cover.jpg')  || files.includes('Cover.jpg')
+            || files.includes('cover.jpeg') || files.includes('Cover.jpeg')
+            || files.includes('cover.gif')  || files.includes('Cover.gif')
+            || files.includes('cover.png')  || files.includes('Cover.png')
           )
             {
-                cover.src = dir + 'cover.jpg';
+                var name = '';
+                
+                for(var i = 0; i < files.length; i++)
+                    {
+                        if( files[i].match(/cover/i) ) { name = files[i]; }
+                    }
+                
+                cover.src = dir + name;
             }
         else
             {
@@ -660,11 +723,17 @@ function set_cover(dir)
                     {
                         cover.src = '';
                         
-                        var entry  = library[entry_playing];
+                        var entry  = playlist[entry_playing];
                         
-                        var search = entry.album  != 'No album'  ? entry.album  :
-                                     entry.artist != 'No artist' ? entry.artist :
-                                                                   false;
+                        var search =
+                            ( !entry.album || entry.album == 'No album' )
+                                ? ''
+                                : entry.album
+                            +
+                            ( !entry.album || entry.artist == 'No artist' )
+                                ? ''
+                                : entry.artist;
+
                         
                         if(!search) { return; }
                         
@@ -692,6 +761,12 @@ function set_cover(dir)
 function search_cover(data)
     {
         var match = data.match(/{"id".+?}/g);
+        
+        if(!match)
+            {
+                console.log('Cant find regex inside search.');
+                return;
+            }
         
         for(var i = 0; i < match.length; i++)
             {
@@ -721,7 +796,7 @@ function search_cover(data)
                                 if(res.statusCode == 200 && length < 10*1024*1024)
                                     {
                                         var name = 'cover.' + type.match(/.+\/(.+)/)[1];
-                                        var dir  = library[entry_playing].dir;
+                                        var dir  = playlist[entry_playing].dir;
                                         
                                         /*********************************************************
                                         * Download to root directory then move it to the entry's
@@ -764,7 +839,7 @@ function process_search(e)
         
         if(current_tab == 'local')
             {
-                sort.filter(library, text);
+                playlist = sort.filter(library, text);
             }
         else if(current_tab == 'icecast' && e.key == 'Enter')
             {
@@ -811,15 +886,23 @@ function get_wiki_page(artist)
                     {
                         var url = body[3][0];
                         
+                        var win = new BrowserWindow
+                            ({
+                                width: 1000,
+                                height: 600,
+                                autoHideMenuBar: true
+                            }).loadURL(url);
+                        /*
                         wiki_iframe[0].src = url;
                         
                         right_el.hide();
                         
-                        /***************************
+                        ***************************
                         * Hide right_td scroll bar
-                        ***************************/
+                        ***************************
                         right_td.css('overflow', 'hidden');
                         wiki_iframe.show();
+                        */
                     }
             });
     }
@@ -830,6 +913,13 @@ function get_wiki_page(artist)
 **********************************************************/
 window.onload = function()
     {
+        title_bar         = $('#title_bar');
+        title_text        = $('#title_text');
+        
+        exit_icon        = $('#title_exit_icon');
+        max_icon         = $('#title_max_icon');
+        min_icon         = $('#title_min_icon');
+        
         audio             = $('audio')[0];
         progress_slider   = $('#progress_slider')[0];
         progress_label    = $('#progress_label');
@@ -845,6 +935,7 @@ window.onload = function()
         replay_button     = $('#replay_button');
         replay_all_button = $('#replay_all_button');
         shuffle_button    = $('#shuffle_button');
+        config_button     = $('#config_button');
         
         local_button      = $('#local_button');
         wiki_button       = $('#wiki_button');
@@ -863,13 +954,24 @@ window.onload = function()
         var genre_header  = $('#genre_header');
         
         
-        library = jsonfile.readFileSync('library.json');
+        library  = jsonfile.readFileSync('library.json');
+        playlist = library;
         
         
         /***************************************************
         * And entry to playlist and play when adding files
         ***************************************************/
         //add_button.onchange = add_file;
+        
+        
+        /******************
+        * Exit icon event
+        ******************/
+        exit_icon.on
+            (
+                'click',
+                function() { app.quit() }
+            );
         
         
         /****************************
@@ -933,15 +1035,23 @@ window.onload = function()
                 audio.paused ? audio.play() : audio.pause();
             });
 
+        /****************
+        * Config button
+        ****************/
+        config_button.on('click', function(e)
+            {
+                alert('Not yet implemented.');
+            });
+
         
         /*****************************
         * Sort table on header click
         *****************************/
-        n_header.on      ( 'click', function(){ sort.library(library, 'number'); } );
-        title_header.on  ( 'click', function(){ sort.library(library, 'title');  } );
-        artist_header.on ( 'click', function(){ sort.library(library, 'artist'); } );
-        album_header.on  ( 'click', function(){ sort.library(library, 'album');  } );
-        genre_header.on  ( 'click', function(){ sort.library(library, 'genre');  } );
+        n_header.on      ( 'click', function(){ sort.library(playlist, 'number'); } );
+        title_header.on  ( 'click', function(){ sort.library(playlist, 'title');  } );
+        artist_header.on ( 'click', function(){ sort.library(playlist, 'artist'); } );
+        album_header.on  ( 'click', function(){ sort.library(playlist, 'album');  } );
+        genre_header.on  ( 'click', function(){ sort.library(playlist, 'genre');  } );
         
         
         /************
@@ -959,11 +1069,11 @@ window.onload = function()
         
         audio.onplay  = function(e)
             {
-                play_button.children()[0].src = 'icons/media-pause-3x.png';
+                play_button[0].src = 'icons/media-pause-3x.png';
             };
         audio.onpause = function(e)
             {
-                play_button.children()[0].src = 'icons/media-play-3x.png';
+                play_button[0].src = 'icons/media-play-3x.png';
             };
         
         audio.ontimeupdate = update_progress;
@@ -1013,7 +1123,7 @@ window.onload = function()
             {
                 current_tab = 'wikipedia';
                 
-                get_wiki_page( library[entry_playing].artist );
+                get_wiki_page( playlist[entry_playing].artist );
             });
         icecast_button.on('click', function()
             {

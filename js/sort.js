@@ -60,44 +60,42 @@ function slice(arr, a, b, el, dir)
     {
         var temp;
         
-        if(dir == -1)
+        for(var i = a; i < b; i++)
             {
-                for(var i = a; i < b; i++)
+                for(var j = i+1; j < b; j++)
                     {
-                        for(var j = i+1; j < b; j++)
+                        if(
+                            (
+                                Number.isInteger( parseInt(arr[i][el]) )
+                             && Number.isInteger( parseInt(arr[j][el]) )
+                            )
+                            /*****************************************
+                            * If both are integers, sort numerically
+                            *****************************************/
+                              ? (
+                                    dir == 1
+                                        ? ( parseInt(arr[i][el]) > parseInt(arr[j][el]) ) // Up
+                                        : ( parseInt(arr[i][el]) < parseInt(arr[j][el]) ) // Down
+                                )
+                            /*******************************
+                            * Else, sort lexicographically
+                            *******************************/
+                              : (
+                                    dir == 1
+                                        ? ( // Up
+                                               arr[i][el].toString().toLowerCase().trim()
+                                             > arr[j][el].toString().toLowerCase().trim()
+                                          )
+                                        : ( // Down
+                                               arr[i][el].toString().toLowerCase().trim()
+                                             < arr[j][el].toString().toLowerCase().trim()
+                                          )
+                                )
+                          )
                             {
-                                if(
-                                    /**
-                                    (Number.isInteger(arr[i][el]) && Number.isInteger(arr[j][el])) ?
-                                        (
-                                            arr[i][el] > arr[j][el]
-                                        ) :
-                                    **/
-                                        (
-                                            arr[i][el].toString().toLowerCase().trim() >
-                                            arr[j][el].toString().toLowerCase().trim()
-                                        )
-                                  )
-                                    {
-                                        temp   = arr[i];
-                                        arr[i] = arr[j];
-                                        arr[j] = temp;
-                                    }
-                            }
-                    }
-            }
-        else if(dir == 1)
-            {
-                for(var i = a; i < b; i++)
-                    {
-                        for(var j = i+1; j < arr.length; j++)
-                            {
-                                if(arr[i][el].toString().toLowerCase() < arr[j][el].toString().toLowerCase())
-                                    {
-                                        temp   = arr[i];
-                                        arr[i] = arr[j];
-                                        arr[j] = temp;
-                                    }
+                                temp   = arr[i];
+                                arr[i] = arr[j];
+                                arr[j] = temp;
                             }
                     }
             }
@@ -115,7 +113,7 @@ function by_el(lib, el_1, el_2)
                     {
                         prev_el = lib[i][el_1];
                         
-                        this.slice(lib, a, b, el_2, -1);
+                        this.slice(lib, a, b, el_2, 1);
                         
                         a = i;
                     }
@@ -202,4 +200,6 @@ function filter(lib, text)
             
         clear_table(track_table);
         reload_library(lib_filter, track_table);
+        
+        return lib_filter;
     }

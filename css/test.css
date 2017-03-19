@@ -2,6 +2,20 @@
 * Global variables
 *******************/
 :root {
+    --title_height: 30px;
     --header_height: 60px;
     --left_menu_width: 190px;
+
+    --title_color: grey;
+    --header_color: grey;
+    --title_icon_hover_color: #aaaaaa;
+
+    --header_icon_normal_color: var(--header_color);
+    --header_icon_hover_color: #aaaaaa;
+
+    --left_menu_color: #ffffff;
+    --left_th_color: grey;
+    
+    --table_th_color: grey;
+    --table_tr_hover_color: grey;
 }

@@ -16,9 +16,10 @@ function createWindow()
         *****************/
         win = new BrowserWindow
             ({
-                width          : 1000,
-                height         : 600,
-                autoHideMenuBar: true
+                width:           1000,
+                height:           600,
+                autoHideMenuBar: true,
+                frame:           false
             });
 
         
@@ -29,7 +30,7 @@ function createWindow()
             ({
                 pathname: path.join(__dirname, 'index.html'),
                 protocol: 'file:',
-                slashes : true
+                slashes:  true
             }));
         
         
