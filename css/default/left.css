@@ -1,0 +1,67 @@
+/***********
+* Left CSS
+***********/
+
+/**********************************************************
+* Id selectors
+**********************************************************/
+
+#left_td {
+    position: absolute;
+
+    background-color: var(--left_menu_color);
+
+    top: calc( var(--header_height) + 32px );
+
+    height: calc(100% - 60px);
+    width:  var(--left_menu_width);
+}
+
+/******************
+* Left menu table
+******************/
+
+#left_table {
+    width: 100%;
+}
+
+#left_table th {
+    border-bottom: 1px solid black;
+    
+    background-color: var(--left_th_color);
+    
+    width:  100%;
+    height: calc( var(--header_height) - 20px );
+}
+#left_table td {
+    padding-top:    10px;
+    padding-bottom: 10px;
+    padding-left:   15px;
+
+    background-color: var(--left_td_normal_color);
+}
+#left_table td:hover {
+    background-color: var(--left_td_hover_color);
+}
+
+#cover_div {
+    position: absolute;
+    
+    border-top: 1px solid black;
+
+    bottom: var(--title_height);
+}
+#cover {
+    width:  var(--left_menu_width);
+    height: var(--left_menu_width);
+}
+#search_input {
+    position: absolute;
+
+    padding-left: 4px;
+
+    bottom: calc( var(--title_height) + var(--left_menu_width) + 2px );
+    
+    width:  100%;
+    height: 30px;
+}

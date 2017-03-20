@@ -5,6 +5,7 @@ const {BrowserWindow} = require('electron').remote;
 
 const {remote} = require('electron');
 const {Menu}   = remote;
+const {dialog} = remote;
 
 const fs       = require('fs');
 const $        = require('jquery');
@@ -18,6 +19,8 @@ const move     = require('./js/move.js');
 const icecast  = require('./js/icecast.js');
 
 const child_process = require('child_process');
+
+const win    = remote.getCurrentWindow();
 
 
 /**********************************************************
@@ -83,6 +86,8 @@ var icecast_button;
 
 var search_input;
 
+var left_td;
+
 var right_el;
 var right_td;
 
@@ -94,6 +99,8 @@ var icecast_table;
 /**********************************************************
 * Global variables
 **********************************************************/
+var default_css = 'default';
+
 var template = [];
 var menu     = Menu.buildFromTemplate(template);
 
@@ -103,6 +110,9 @@ var entries = [];
 
 var entry_playing = 0;
 var current_tab   = 'local';
+
+var prev_x;
+var prev_y;
 
 
 /*****************
@@ -165,6 +175,28 @@ function format_time(time)
         return m + ':' + s;
     }
 
+function set_CSS(folder)
+    {
+        $('head link').remove();
+        
+        $('head').append('<link rel="stylesheet" href="css/'+folder+'/main.css"/>');
+        $('head').append('<link rel="stylesheet" href="css/'+folder+'/header.css"/>');
+        $('head').append('<link rel="stylesheet" href="css/'+folder+'/left.css"/>');
+        $('head').append('<link rel="stylesheet" href="css/'+folder+'/right.css"/>');
+    }
+
+function load_available_css()
+    {
+        var folders = fs.readdirSync('./css');
+        
+        var children = css_select.children().remove();
+        
+        for(var i = 0; i < folders.length; i++)
+            {
+                css_select.append('<option value="'+folders[i]+'">'+folders[i]+'</option>');
+            }
+    }
+
 /*****************************************************
 * Name        : set_window_title
 * Description : Shorthand for setting window's title
@@ -175,6 +207,7 @@ function format_time(time)
 *****************************************************/
 function set_window_title(entry)
     {
+        window.document.title = entry.artist + ' / ' + entry.album + ' - ' + entry.title;
         title_text.text( entry.artist + ' / ' + entry.album + ' - ' + entry.title );
     }
 
@@ -299,17 +332,43 @@ function read_tags(path)
             )
     }
 
-/************************************************
+/**************************************************************************************
 * Name        : add_folder
-* Description : TODO
+* Description : Do a recursive folder search and add files that look like audio files
 * Takes       : path (str) - Path to the folder
-* Returns     : TODO
-* Notes       : TODO
-* TODO        : Everything
-************************************************/
+* Returns     : Nothing
+* Notes       : Nothing
+* TODO        : Nothing
+**************************************************************************************/
 function add_folder(path)
     {
-        /** TODO **/
+        var files = fs.readdirSync(path);
+        
+        for(var i = 0; i < files.length; i++)
+            {
+                var file_path = path + '\\' + files[i];
+                
+                /*************************
+                * Check if it's a folder
+                *************************/
+                if( fs.lstatSync(file_path).isDirectory() )
+                    {
+                        console.log('folder', file_path);
+                        add_folder(file_path);
+
+                    }
+                else
+                    {
+                        /***************************************
+                        * Check if it looks like an audio file
+                        ***************************************/
+                        if( file_path.match(/.+\.(mp3|ogg|wav|flac)/) )
+                            {
+                                console.log('file', file_path);
+                                read_tags(file_path);
+                            }
+                    }
+            }
     }
 
 
@@ -365,7 +424,16 @@ function show_entry_context_menu(e, entry)
             [
                 {
                     label: 'Add folder',
-                    click() { alert('Not implemented yet.'); }
+                    click()
+                        {
+                            dialog.showOpenDialog
+                                (
+                                    {
+                                        properties: ['openDirectory']
+                                    },
+                                    function(path) { add_folder(path[0]); }
+                                );
+                        }
                 },
                 {
                     label: 'Open file location',
@@ -384,13 +452,16 @@ function show_entry_context_menu(e, entry)
                     click() { remove_entry(entry); }
                 },
                 {
-                    label: IS_CONTENT_EDITABLE ? 'Edit and save' : 'Edit',
+                    label: IS_CONTENT_EDITABLE
+                        ? 'Edit and save'
+                        : 'Edit',
+                    
                     click() { toggle_editable(); }
                 }
             ];
             
         menu = Menu.buildFromTemplate(template);
-        menu.popup(remote.getCurrentWindow());
+        menu.popup(win);
     }
 
 
@@ -465,9 +536,11 @@ function play_next_entry()
         /**********************************************************************************
         * If it's the last track check for REPLAY_ALL and go to the first one, else go on
         **********************************************************************************/
-        index = SHUFFLE    ? parseInt( Math.random()*playlist.length ) :
-                REPLAY_ALL ? (entry_playing + 1) % playlist.length     :
-                             (entry_playing + 1);
+        index = SHUFFLE
+            ? parseInt( Math.random()*playlist.length )
+            : REPLAY_ALL
+                ? (entry_playing + 1) % playlist.length
+                : (entry_playing + 1);
         
         if(index >= 0 && index < playlist.length)
             {
@@ -911,6 +984,12 @@ function get_wiki_page(artist)
 /**********************************************************
 * Execution
 **********************************************************/
+
+/***********
+* Load CSS
+***********/
+set_CSS(default_css);
+
 window.onload = function()
     {
         title_bar         = $('#title_bar');
@@ -927,6 +1006,7 @@ window.onload = function()
         track_table       = $('#track_table');
         wiki_iframe       = $('#wiki_iframe');
         icecast_table     = $('#icecast_table');
+        config_menu       = $('#config_menu');
         
         add_button        = $('#add_button')[0];
         back_button       = $('#back_button');
@@ -943,8 +1023,12 @@ window.onload = function()
         
         search_input      = $('#search_input');
         
+        left_td           = $('#left_td');
+        
         right_td          = $('#right_td');
         right_el          = $('.right_el');
+        
+        css_select        = $('#css_select');
         
         
         var n_header      = $('#n_header');
@@ -958,12 +1042,6 @@ window.onload = function()
         playlist = library;
         
         
-        /***************************************************
-        * And entry to playlist and play when adding files
-        ***************************************************/
-        //add_button.onchange = add_file;
-        
-        
         /******************
         * Exit icon event
         ******************/
@@ -971,6 +1049,17 @@ window.onload = function()
             (
                 'click',
                 function() { app.quit() }
+            );
+        max_icon.on
+            (
+                'click',
+                function() { alert('Not yet implemented.'); }
+                //function() { app.fullscreen() }
+            );
+        min_icon.on
+            (
+                'click',
+                function() { win.minimize() }
             );
         
         
@@ -997,7 +1086,9 @@ window.onload = function()
                 replay_button.css
                     (
                         'background-color',
-                        audio.loop == true ? HEADER_BUTTON_PUSHED_COLOR : HEADER_BUTTON_NORMAL_COLOR
+                        audio.loop == true
+                            ? HEADER_BUTTON_PUSHED_COLOR
+                            : HEADER_BUTTON_NORMAL_COLOR
                     );
             });
         replay_all_button.on('click', function(e)
@@ -1007,7 +1098,9 @@ window.onload = function()
                 replay_all_button.css
                     (
                         'background-color',
-                        REPLAY_ALL ? HEADER_BUTTON_PUSHED_COLOR : HEADER_BUTTON_NORMAL_COLOR
+                        REPLAY_ALL
+                            ? HEADER_BUTTON_PUSHED_COLOR
+                            : HEADER_BUTTON_NORMAL_COLOR
                     );
             });
 
@@ -1022,7 +1115,9 @@ window.onload = function()
                 shuffle_button.css
                     (
                         'background-color',
-                        SHUFFLE ? HEADER_BUTTON_PUSHED_COLOR : HEADER_BUTTON_NORMAL_COLOR
+                        SHUFFLE
+                            ? HEADER_BUTTON_PUSHED_COLOR
+                            : HEADER_BUTTON_NORMAL_COLOR
                     );
             });
 
@@ -1032,7 +1127,9 @@ window.onload = function()
         *******************/
         play_button.on('click', function(e)
             {
-                audio.paused ? audio.play() : audio.pause();
+                audio.paused
+                    ? audio.play()
+                    : audio.pause();
             });
 
         /****************
@@ -1040,7 +1137,11 @@ window.onload = function()
         ****************/
         config_button.on('click', function(e)
             {
-                alert('Not yet implemented.');
+                right_el.hide();
+                
+                load_available_css();
+                
+                config_menu.show();
             });
 
         
@@ -1134,6 +1235,12 @@ window.onload = function()
             });
 
         search_input.on('keyup', process_search);
+        
+        
+        css_select.on('change', function(e)
+            {
+                set_CSS( e.target.value );
+            });
 
         
         /**************

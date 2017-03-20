@@ -1,0 +1,28 @@
+/*******************
+* Global variables
+*******************/
+:root {
+    --title_height: 30px;
+    --header_height: 60px;
+    --left_menu_width: 190px;
+
+    
+    --body_color: grey;
+
+    --title_color: grey;
+    --header_color: grey;
+    --title_icon_hover_color: #aaaaaa;
+
+    --header_icon_normal_color: var(--header_color);
+    --header_icon_hover_color: #aaaaaa;
+
+    --left_menu_color: #ffffff;
+    --left_th_color: grey;
+    --left_td_hover_color: grey;
+    --left_td_normal_color: #ffffff;
+    
+    --table_th_color: grey;
+    --table_tr_hover_color: grey;
+    --table_tr_even_color: #eeeeee;
+    --table_tr_odd_color: #ffffff;
+}

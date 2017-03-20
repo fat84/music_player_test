@@ -1,0 +1,172 @@
+/*************
+* Header CSS
+*************/
+
+/**********************************************************
+* Tag selectors
+**********************************************************/
+
+/******************************************
+* Override default input range appearance
+******************************************/
+input[type='range'],
+input[type='range']::-webkit-slider-thumb {
+    -webkit-appearance: none;
+}
+
+body {
+    overflow: hidden;
+
+    -webkit-app-region: no-drag;
+
+    /***********************
+    * Avoid text selecting
+    ***********************/
+    -webkit-user-select: none;
+    cursor:              default;
+    
+    margin: 0px;
+    margin-top: 1px;
+
+    background-color: var(--body_color);
+}
+
+
+/**********************************************************
+* Class selectors
+**********************************************************/
+.title_icon {
+    padding-left:  15px;
+    padding-right: 15px;
+    padding-bottom: 8px;
+    padding-top:    8px;
+
+    float: right;
+
+    -webkit-app-region: no-drag;
+}
+.title_icon:hover {
+    background: var(--header_icon_hover_color);
+}
+
+.header_button {
+    padding: 18px;
+
+    border-radius: 4px;
+
+    background-color: var(--header_icon_normal_color);
+}
+.header_button:hover {
+    background-color: var(--header_icon_hover_color);
+}
+
+/**********************************************************
+* Id selectors
+**********************************************************/
+#title_bar {
+    height: var(--title_height);
+
+    -webkit-app-region: drag;
+    
+    background-color: var(--title_color);
+    
+    font-size: 15px;
+
+    /***********************************************************
+    * There is no transparency so the background appears white
+    ***********************************************************/
+    //border-radius: 0px 0px 0px 0px;
+}
+#title_text {
+    position: relative;
+
+    padding-left: 20px;
+
+    top: 8px;
+}
+
+#header {
+    overflow: hidden;
+    position: absolute;
+
+    background-color: var(--header_color);
+    
+    border-bottom: 1px solid black;
+    
+    width:  100%;
+    height: var(--header_height);
+}
+
+#playing_div {
+    position: relative;
+    
+    background-color: var(--header_color);
+    
+    top:  -64px;
+    left: 472px;
+
+    height: var(--header_height);
+}
+#player_div {
+    position: relative;
+    
+    top:  20px;
+    left: 50px;
+}
+#progress_slider {
+    position: relative;
+
+    border: 1px solid black;
+
+    height: 10px;
+    width:  300px;
+}
+#progress_slider::-webkit-slider-thumb {
+    background-color: black;
+    
+    height: 20px;
+    width:  10px;
+}
+#progress_label {
+    position: relative;
+
+    padding-right: 10px;
+}
+#volume_icon {
+    position: relative;
+    
+    border:        1px solid black;
+    border-radius: 2px;
+
+    padding: 10px;
+
+    top: -8px;
+    left: 470px;
+}
+#volume_icon:hover {
+    background-color: #aaaaaa;
+}
+#volume_slider {
+    position: absolute;
+    
+    width:  100px;
+    height:   8px;
+
+    top:   70px;
+    left: 438px;
+
+    border: 1px solid black;
+
+    z-index: 4;
+
+    display: none;
+
+    -webkit-transform:rotate(90deg);
+
+}
+#volume_slider::-webkit-slider-thumb {
+    background-color: black;
+    
+    height: 20px;
+    width:  10px;
+}

@@ -1,33 +1,28 @@
 <html>
     <head>
         <title>music player test</title>
-        
+        <!--
         <link rel='stylesheet' href='css/test.css'/>
         <link rel='stylesheet' href='css/header.css'/>
         <link rel='stylesheet' href='css/left.css'/>
         <link rel='stylesheet' href='css/right.css'/>
-        
+        -->
         
         <script src='js/test.js'></script>
     </head>
 
     <body>
+    <!-- Title -->
         <div id='title_bar'>
             <text id='title_text'>music player test</text>
             
-            <img src='icons/x-2x.png' id='title_exit_icon' class='title_icon'/>
-            <img src='icons/fullscreen-enter-2x.png' id='title_max_icon' class='title_icon'/>
-            <img src='icons/fullscreen-exit-2x.png' id='title_min_icon' class='title_icon'/>
+            <img src='icons/x-2x.png'                id='title_exit_icon' class='title_icon'/>
+            <img src='icons/fullscreen-enter-2x.png' id='title_max_icon'  class='title_icon'/>
+            <img src='icons/fullscreen-exit-2x.png'  id='title_min_icon'  class='title_icon'/>
         </div>
+        
         <!-- Header buttons -->
         <div id='header'>
-            <!--
-            <label for='add_button' id='add_label' class='header_button'>
-                <img src='icons/folder-3x.png'/>
-            </label>
-            <input type='file' id='add_button'/>
-            -->
-            
             <img src='icons/media-step-backward-3x.png' id='back_button'       class='header_button'/>
             <img src='icons/media-play-3x.png'          id='play_button'       class='header_button'/>
             <img src='icons/media-step-forward-3x.png'  id='next_button'       class='header_button'/>
@@ -45,8 +40,9 @@
                     <input type='range' id='progress_slider'/>
                 </div>
                 
-                <!-- TODO: Volume button -->
                 <img src='icons/volume-high-2x.png' id='volume_icon'/>
+                <!--<label for='progress_slider' id='progress_label'>1</label>-->
+                <input type='range' id='volume_slider'/>
             </div>
         </div>
         
@@ -88,7 +84,11 @@
                     -->
                 </tr>
             </table>
+            
+            <!-- Wikipedia iframe -->
             <iframe src='' id='wiki_iframe' class='right_el'></iframe>
+            
+            <!-- Icecast table -->
             <table id='icecast_table' class='table right_el' cellspacing='0'>
                 <tr>
                     <th>Name</th>
@@ -98,6 +98,17 @@
                     <th>Url</th>
                 </tr>
             </table>
+            
+            <!-- TODO: Config div -->
+            <div id='config_menu' class='right_el'>
+                <br><br>
+                <h1>Configuration</h1>
+                <br>
+            
+                <h2>Select CSS</h2>
+                <select name='css' id='css_select'>
+                </select>
+            </div>
         </div>
     </body>
 </html>

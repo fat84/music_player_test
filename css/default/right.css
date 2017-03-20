@@ -1,0 +1,87 @@
+/***************
+* Right td CSS
+***************/
+
+/**********************************************************
+* Class selectors
+**********************************************************/
+
+.table th {
+    /******************************************************
+    * Right and bottom borders are from .table th
+    * Left and top borders are from left_td and #right_td
+    ******************************************************/
+    border-bottom: 1px solid black;
+    border-right:  1px solid black;
+
+    background-color: var(--table_th_color);
+
+    height: 40px;
+    width:  150px;
+}
+.table td {
+    overflow:      hidden; /* For long text trimming */
+    white-space:   nowrap;
+    max-width:     200px;
+    text-overflow: ellipsis;
+
+    border-right: 1px solid black;
+
+    padding-top:    15px;
+    padding-bottom: 15px;
+    padding-left:   20px;
+    padding-right:  20px;
+
+    text-align: left;
+}
+.table tr:hover           { background-color: var(--table_tr_hover_color) !important; }
+.table tr:nth-child(even) { background-color: var(--table_tr_even_color); }
+.table tr:nth-child(odd)  { background-color: var(--table_tr_odd_color); }
+
+.track_table_n_col        { text-align: center !important; }
+
+/**********************************************************
+* Id selectors
+**********************************************************/
+
+#right_td {
+    position: absolute;
+    overflow: scroll;
+
+    border-left: 1px solid black;
+    
+    top:  calc( var(--header_height) + var(--title_height) + 2px );
+    left: var(--left_menu_width);
+
+    width:  calc( 100% - var(--left_menu_width) );
+    height: calc( 100% - var(--header_height)   );
+
+    background-color: white;
+}
+
+/**************************
+* Wikipedia search iframe
+**************************/
+#wiki_iframe {
+    position: relative;
+
+    display: none;
+    
+    height: 100%;
+    width:  100%;
+}
+
+/***********************
+* Icecast search table
+***********************/
+#icecast_table { display: none; }
+
+#config_menu {
+    padding-left: 20px;
+}
+#css_select {
+    padding-left:   10px;
+    padding-right:  10px;
+    padding-top:     5px;
+    padding-bottom:  5px;
+}
