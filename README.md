@@ -3,7 +3,8 @@
 Music player test made with JS and CSS
 <br><br>
 
-![screenshot](./screenshot.PNG)
+
+![screenshot](./screenshot.PNG?classes=shadow)
 
 <br>
 <h2>Download</h2>
