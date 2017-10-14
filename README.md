@@ -4,7 +4,7 @@ Music player test made with JS and CSS
 <br><br>
 
 
-![screenshot](./screenshot.PNG){: .shadow}
+![screenshot](./screenshot2.png)
 
 <br>
 <h2>Download</h2>
