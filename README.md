@@ -4,7 +4,7 @@ Music player test made with JS and CSS
 <br><br>
 
 
-![screenshot](./screenshot2.png)
+![screenshot](https://user-images.githubusercontent.com/14959143/31885493-fc309fa6-b7f0-11e7-92ed-715f11b562ea.png)
 
 <br>
 <h2>Download</h2>
